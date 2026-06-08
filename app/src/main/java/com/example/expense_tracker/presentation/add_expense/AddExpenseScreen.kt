@@ -16,7 +16,7 @@ import java.util.*
 @Composable
 fun AddExpenseScreen(
     viewModel: AddExpenseViewModel,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -38,12 +38,14 @@ fun AddExpenseScreen(
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
-                TextButton(onClick = {
-                    datePickerState.selectedDateMillis?.let {
-                        viewModel.onDateChanged(it)
+                TextButton(
+                    onClick = {
+                        datePickerState.selectedDateMillis?.let {
+                            viewModel.onDateChanged(it)
+                        }
+                        showDatePicker = false
                     }
-                    showDatePicker = false
-                }) {
+                ) {
                     Text("OK")
                 }
             },
@@ -118,7 +120,7 @@ fun AddExpenseScreen(
                 onClick = { showDatePicker = true },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                val dateStr = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(Date(state.dateEpochMillis))
+                val dateStr = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(Date(state.dateEpochMillis))
                 Text("Date: $dateStr")
             }
 

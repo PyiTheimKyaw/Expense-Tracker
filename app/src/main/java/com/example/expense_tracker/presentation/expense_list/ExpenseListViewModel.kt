@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expense_tracker.domain.repository.ExpenseRepository
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class ExpenseListViewModel(
     private val repository: ExpenseRepository
@@ -14,6 +15,26 @@ class ExpenseListViewModel(
 
     init {
         observeExpenses()
+    }
+
+    fun deleteExpense(id: Long) {
+        viewModelScope.launch {
+            try {
+                repository.deleteExpense(id)
+            } catch (e: Exception) {
+                _state.value = ExpenseListState.Error(e.message ?: "Failed to delete expense")
+            }
+        }
+    }
+
+    fun clearAllExpenses() {
+        viewModelScope.launch {
+            try {
+                repository.clearAllExpenses()
+            } catch (e: Exception) {
+                _state.value = ExpenseListState.Error(e.message ?: "Failed to clear expenses")
+            }
+        }
     }
 
     private fun observeExpenses() {

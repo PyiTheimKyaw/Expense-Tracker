@@ -18,5 +18,13 @@ class ExpenseRepositoryImpl(
     override suspend fun addExpense(expense: Expense) {
         expenseDao.insertExpense(expense.toEntity())
     }
+
+    override suspend fun deleteExpense(id: Long) {
+        expenseDao.deleteExpense(id)
+    }
+
+    override suspend fun clearAllExpenses() {
+        expenseDao.clearAll()
+    }
 }
 
